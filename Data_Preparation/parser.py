@@ -1,35 +1,48 @@
 import bz2
 import xml.etree.ElementTree as ET
 
-# The path you provided
 file_path = '/home/max-tost/Dokumente/Wiki-To-Go/Data/Debugging_Data/enwiki-20250901-pages-articles-multistream1.xml-p1p41242.bz2'
 
-def show_first_articles(path, count=3):
-    print(f"Reading from: {path}")
+def inspect_specific_article(path, target_title):
+    print(f"Searching for '{target_title}' in {path}...")
     
-    # Open the bz2 file in text mode ('rt') with utf-8 encoding
-    try:
-        with bz2.open(path, 'rt', encoding='utf-8') as f:
-            # iterparse allows us to process the XML incrementally
-            context = ET.iterparse(f, events=('end',))
-            
-            found = 0
-            for event, elem in context:
-                # Check if the tag ends with 'title' (ignoring namespaces)
-                if elem.tag.endswith('title'):
-                    print(f"{found + 1}. {elem.text}")
-                    found += 1
+    with bz2.open(path, 'rt', encoding='utf-8') as f:
+        # iterparse walks through the XML file. 
+        # We wait for the 'end' event of an element so we know it's fully loaded.
+        context = ET.iterparse(f, events=('end',))
+        
+        for event, elem in context:
+            # We only care when a full <page> tag is closed
+            if elem.tag.endswith('page'):
+                
+                # Initialize variables to hold what we find inside this page
+                current_title = None
+                current_text = None
+                
+                # Iterate through the children of the <page> tag (like <title>, <revision>, etc.)
+                for child in elem.iter():
+                    if child.tag.endswith('title'):
+                        current_title = child.text
+                    elif child.tag.endswith('text'):
+                        current_text = child.text
+                
+                # Check if this is the article we want
+                if current_title == target_title:
+                    print(f"\n=== FOUND ARTICLE: {current_title} ===\n")
                     
-                    # Clear the element to free memory
-                    elem.clear()
+                    if current_text:
+                        # Print the first 2000 characters to see the structure
+                        print("--- RAW CONTENT START ---")
+                        print(current_text[:2000])
+                        print("\n--- RAW CONTENT END (Truncated) ---")
+                    else:
+                        print("No text content found.")
                     
-                    if found >= count:
-                        break
-                        
-    except FileNotFoundError:
-        print("Error: File not found. Please check the path.")
-    except Exception as e:
-        print(f"An error occurred: {e}")
+                    # We found what we wanted, so we stop the function
+                    return
+
+                # Important: Clear the element from memory after processing to keep RAM usage low
+                elem.clear()
 
 if __name__ == "__main__":
-    show_first_articles(file_path)
+    inspect_specific_article(file_path, "Anarchism")
