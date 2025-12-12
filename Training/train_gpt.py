@@ -135,7 +135,36 @@ if __name__ == "__main__":
     model.model.save_pretrained(f"{SAVE_DIR}/final_model")
     tokenizer.save_pretrained(f"{SAVE_DIR}/final_model")
     
-    # 7. Quick Inference Test
-    print("\n--- Inference Test ---")
-    generated_text = model.generate("The history of science is", tokenizer)
-    print(generated_text)
+    # 7. Extended Inference Test
+    print("\n" + "="*40)
+    print("--- EXTENDED INFERENCE TEST ---")
+    print("="*40)
+    
+    test_prompts = [
+        "The history of science is",
+        "The capital of France is",
+        "Physics is the natural science that",
+        "The Roman Empire was",
+        "Artificial intelligence is",
+        "William Shakespeare was a",
+        "The Earth revolves around",
+        "In mathematics, a function is",
+        "The first World War began in",
+        "Computer programming is"
+    ]
+
+    # Run inference for each prompt
+    # Note: We manually move model to GPU for inference if trainer didn't leave it there
+    model.to("cuda") 
+    
+    for i, prompt in enumerate(test_prompts):
+        print(f"\n[Test {i+1}] Prompt: {prompt}")
+        try:
+            generated_text = model.generate(prompt, tokenizer)
+            # Print just the new part to keep it clean (optional, here we print full)
+            print(f"Generated: {generated_text}")
+        except Exception as e:
+            print(f"Error generating: {e}")
+
+    print("\n" + "="*40)
+    print("Done!")
