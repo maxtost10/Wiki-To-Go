@@ -4,11 +4,14 @@ import re
 import os
 import time
 
-# --- CONFIGURATION ---
-INPUT_FILE = '/home/max-tost/Dokumente/Wiki-To-Go/Data/Debugging_Data/enwiki-20250901-pages-articles-multistream1.xml-p1p41242.bz2'
-OUTPUT_FILE = '/home/max-tost/Dokumente/Wiki-To-Go/Data/Debugging_Data/wiki_data_debug.txt'
+# --- CONFIGURATION (UPDATED FOR RUNPOD) ---
+INPUT_FILE = '/workspace/Data/enwiki-latest-pages-articles-multistream.xml.bz2'
+
+# Output: The cleaned text file
+OUTPUT_FILE = '/workspace/Data/wiki_data_cleaned.txt'
+
 MIN_ARTICLE_LENGTH = 200  
-DEBUG_LIMIT = 5  # <--- Set this to None to process the whole file later
+DEBUG_LIMIT = None  # <--- CHANGED: Process EVERYTHING (Takes ~3-5 hours)
 
 def remove_nested_brackets(text, prefixes_to_delete):
     """Robustly removes [[...]] blocks with specific prefixes, keeping others."""
@@ -127,7 +130,10 @@ def process_dump(input_path, output_path, limit=None):
                     if len(cleaned) > MIN_ARTICLE_LENGTH:
                         f_out.write(cleaned + '\n')
                         count += 1
-                        print(f"Saved article [{count}]: {title}")
+                        
+                        # Print progress every 1000 articles so your terminal doesn't freeze
+                        if count % 1000 == 0:
+                            print(f"Processed {count} articles...", end='\r')
                         
                         if limit and count >= limit:
                             print(f"\nReached limit of {limit} articles.")
