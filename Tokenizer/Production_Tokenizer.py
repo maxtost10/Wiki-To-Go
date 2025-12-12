@@ -1,10 +1,13 @@
 from tokenizers import Tokenizer, models, trainers, pre_tokenizers, decoders
 import os
 
-# --- CONFIGURATION ---
-DATA_FILE = '/home/max-tost/Dokumente/Wiki-To-Go/Data/Debugging_Data/wiki_data_debug.txt'
-SAVE_PATH = '/home/max-tost/Dokumente/Wiki-To-Go/Models/Tokenizer/wiki_tokenizer.json'
-VOCAB_SIZE = 32000  # Standard size (GPT-2 was 50k, Llama is 32k)
+# --- CONFIGURATION (UPDATED FOR RUNPOD) ---
+DATA_FILE = '/workspace/Data/wiki_data_cleaned.txt'
+
+# Output:
+SAVE_PATH = '/workspace/Wiki-To-Go/Models/Tokenizer/wiki_tokenizer.json'
+
+VOCAB_SIZE = 32000 
 
 # Ensure directory exists
 os.makedirs(os.path.dirname(SAVE_PATH), exist_ok=True)
