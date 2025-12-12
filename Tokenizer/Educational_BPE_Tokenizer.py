@@ -13,13 +13,16 @@
 
 # %%
 # Configuration
+# Configuration
 DATA_PATH = '/home/max-tost/Dokumente/Wiki-To-Go/Data/Debugging_Data/wiki_data_debug.txt'
 
-# Let's read the first 10,000 characters of your debug data to train our toy tokenizer
+# Let's read the data
 with open(DATA_PATH, 'r', encoding='utf-8') as f:
-    text_data = f.read(10000)
+    full_text = f.read() # Read the whole file to know the actual set size
+    text_data = full_text[:10000] # Use only the first 10k for this educational toy example
 
-print(f"Loaded {len(text_data)} characters.")
+print(f"Total dataset available: {len(full_text)} characters.")
+print(f"Using for this demo:     {len(text_data)} characters.")
 print(f"Sample: {text_data[:100]}...")
 
 # %% [markdown]
@@ -75,6 +78,11 @@ test_ids = [1, 2, 3, 1, 2]
 print(f"Test stats for {test_ids}: {get_stats(test_ids)}") 
 # Should see (1, 2): 2
 
+# Test the merge function: Replace pair (1, 2) with new token ID 99
+merged_ids = merge(test_ids, (1, 2), 99)
+print(f"Test merge of (1, 2) -> 99: {merged_ids}")
+# Should see [99, 3, 99]
+
 # %% [markdown]
 # ## Step 3: The Training Loop
 # Now we iterate!
@@ -82,7 +90,7 @@ print(f"Test stats for {test_ids}: {get_stats(test_ids)}")
 # We will do 20 merges just to see it work.
 
 # %%
-vocab_size = 276 # 256 initial bytes + 20 new merges
+vocab_size = 1000 # 256 initial bytes + 20 new merges
 num_merges = vocab_size - 256
 ids = list(tokens) # Working copy
 
@@ -154,12 +162,15 @@ def decode(ids):
     return tokens.decode("utf-8", errors="replace")
 
 # Test
-test_sentence = "the" # 'th' and 'e' are very common in English
+test_sentence = "Your advertisement could be here" # 'th' and 'e' are very common in English
 encoded = encode(test_sentence)
 decoded = decode(encoded)
 
 print(f"Input: '{test_sentence}'")
 print(f"IDs: {encoded}")
 print(f"Decoded: '{decoded}'")
+print(f"The length of encoded IDs: {len(encoded)}")
+print(f"The length of original text: {len(test_sentence)}")
 
 # Use this notebook to play around and change the number of merges!
+# %%
