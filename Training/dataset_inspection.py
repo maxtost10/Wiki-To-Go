@@ -9,7 +9,7 @@ import torch.nn.functional as F
 from transformers import GPT2LMHeadModel, GPT2Config, PreTrainedTokenizerFast
 
 # --- CONFIGURATION ---
-TOKENIZER_PATH = '/workspace/Wiki-To-Go/Models/Tokenizer/wiki_tokenizer.json'
+TOKENIZER_PATH = '/home/max-tost/Dokumente/Wiki-To-Go/wiki_tokenizer.json'
 
 # %% [markdown]
 # ## 1. Load Tokenizer & Prepare Data
