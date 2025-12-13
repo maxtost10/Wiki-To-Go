@@ -1,6 +1,6 @@
 # Tokenization: The Bridge Between Language and Math
 
-## 1. Why do we need a Tokenizer?
+## Why do we need a Tokenizer?
 Neural networks are mathematical functions—they perform matrix multiplications on numbers, not text. We cannot simply feed the string "Wiki to go" into a transformer. We need to translate it into a sequence of integers.
 
 There are three main approaches to this translation, but only one works well for Large Language Models (LLMs):
@@ -14,7 +14,7 @@ There are three main approaches to this translation, but only one works well for
     *   Rare words ("antidisestablishmentarianism") are broken into meaningful chunks ("anti", "dis", "establish"...).
     *   *Benefit:* Efficient sequence length + reasonable vocabulary size (~32k-50k).
 
-## 2. Learning by Doing: The Toy Tokenizer
+## Learning by Doing: The Toy Tokenizer
 To understand the "Black Box" of tokenization, we implemented the **Byte Pair Encoding (BPE)** algorithm from scratch in Python.
 
 ### The Algorithm
@@ -34,9 +34,20 @@ We experimented with the number of merges on a small Wikipedia dataset and disco
 *   **The "Sweet Spot":**
     We learned that we need to stop merging when the vocabulary reaches a standard size (typically **32,000 to 50,000** tokens). This balances compression (short sequences) with generalization (reusable subwords).
 
-## 3. The Path Forward: Production Tokenizer
-While our Python script was perfect for understanding the concepts, it is too slow for processing 20GB of Wikipedia data.
+### Production Results (Rust Implementation)
+For the full 27GB dataset, our Python script was too slow. We switched to the Hugging Face `tokenizers` library (Rust backend) for the final run.
 
-For the actual model training, we will use the **Hugging Face `tokenizers` library**.
-*   **Why:** It is written in Rust (extremely fast), handles Unicode edge cases correctly, and is the industry standard.
-*   **Configuration:** We will set a vocabulary size of **32,000** (similar to Llama 2) to ensure our small model doesn't waste parameters on an overly large embedding matrix.
+**Run Statistics:**
+*   **Input:** 35.8 Million text chunks.
+*   **Vocabulary Size:** 32,000 tokens.
+*   **Training Time:** ~10 minutes (vs hours/days with pure Python).
+
+**Inference Test:**
+We tested the tokenizer on a new sentence to verify subword splitting:
+
+> **Input:** "Hello, this is a wiki tokenizer test."  
+> **Tokens:** `['Hello', ',', 'Ġthis', 'Ġis', 'Ġa', 'Ġwiki', 'Ġto', 'ken', 'izer', 'Ġtest', '.']`
+
+*   **Observation 1:** The `Ġ` symbol represents a preceding space.
+*   **Observation 2:** Common words like "wiki" are single tokens.
+*   **Observation 3:** "tokenizer" was split into `to` + `ken` + `izer`, proving the BPE successfully generalizes to complex words using known sub-parts.
