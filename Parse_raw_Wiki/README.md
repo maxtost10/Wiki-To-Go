@@ -50,4 +50,4 @@ DEBUG_LIMIT = 5  # Set to None to process the whole file
 ```
 
 ## Application to the full Wiki Dataset
-This script processed the 8020729 articles from the english Wikipedia in 3.5 hours.
+This script processed the 8020729 articles from the english Wikipedia in 3.5 hours. The size of the compressed wikipedia is 25GB, the size of the decompressed text file is 27GB.
