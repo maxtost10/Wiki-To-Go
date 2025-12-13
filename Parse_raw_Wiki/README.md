@@ -47,3 +47,7 @@ Open `build_wiki_dataset.py` and edit the constants at the top:
 INPUT_FILE = '/path/to/enwiki-latest-pages-articles.xml.bz2'
 OUTPUT_FILE = '/path/to/output.txt'
 DEBUG_LIMIT = 5  # Set to None to process the whole file
+```
+
+## Application to the full Wiki Dataset
+This script processed the 8020729 articles from the english Wikipedia in 3.5 hours.
