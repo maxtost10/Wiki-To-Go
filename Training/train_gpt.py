@@ -28,6 +28,7 @@ MODEL_CONFIG = GPT2Config(
 BATCH_SIZE = 8          # Adjust based on VRAM usage
 GRAD_ACCUMULATION = 4   # Effective batch size = 32
 LEARNING_RATE = 6e-4    # Standard for this scale
+torch.set_float32_matmul_precision('medium') # To speed up trainingd
 
 # --- 1. DATASET (Streaming) ---
 class WikiIterableDataset(IterableDataset):
@@ -108,7 +109,7 @@ if __name__ == "__main__":
     
     print("Initializing Dataset...")
     dataset = WikiIterableDataset(DATA_FILE, tokenizer, block_size=MODEL_CONFIG.n_positions)
-    dataloader = DataLoader(dataset, batch_size=BATCH_SIZE, num_workers=2, pin_memory=True)
+    dataloader = DataLoader(dataset, batch_size=BATCH_SIZE, num_workers=1, pin_memory=True)
 
     # 3. Initialize Model
     print("Initializing GPT Model...")
