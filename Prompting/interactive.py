@@ -4,7 +4,7 @@ import sys
 
 # --- CONFIGURATION ---
 # Path to the folder where 'final_model' was saved
-MODEL_PATH = '/workspace/Wiki-To-Go/Models/Checkpoints/final_model'
+MODEL_PATH = '../Models/Checkpoints/final_model'
 DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
 
 def load_model():

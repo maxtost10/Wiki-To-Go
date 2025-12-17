@@ -90,6 +90,11 @@ Here are some **actual** outputs from the model:
 > **You:** Tax evasion is \
 > **GPT:** ...likely to be a form of coordinated Sockpuppet. The evidence is likely to be related to the use of multiple accounts to circumvent the block, given the nature of a behavioral investigation, and the amount of activity in the TAs.
 
+**5. Funny enough, it did actually capture some facts**
+The first tram line in Munich was actually introduced in October 1876, all that stuff about Leipzig aside, its funny that it remembers the rough year where the tram was introduced in Munich. Or maybe its just a coincidence, still funny I think ..
+> **You:** Munich is \
+> **GPT:** ... a historic district and part of the city of Leipzig, Germany, and also a heritage site. The district is a major transport hub in the city. The districts were built between 1885 and 1891 as part of the Leipzig city expansion, which also included the expansion of the railway station. After the demolition, the district's first tram line was opened in 1887. The district's tram route was extended for the tram line in 1895, and in 1897 the line was extended to the eastern part of the city.
+
 ---
 
 ## How to Run
