@@ -1,2 +1,4 @@
 Data/*
 Parse_raw_Wiki/wandb/
+Models/
+Parse_raw_Wiki/Wiki-To-Go/zo4lr4mb/checkpoints/*.ckpt
