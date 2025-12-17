@@ -46,11 +46,11 @@ Here is how the project is organized:
 
 ### 1. Parsing the World
 Before a model can learn, it must read. We processed the 25GB compressed Wikipedia dump, stripping away HTML, tables, and markup to produce clean, linear text.
-*   **Detailed Documentation:** [Read about the Parser logic](./Wiki-To-Go/Parse_raw_Wiki/README.md)
+*   **Detailed Documentation:** [Read about the Parser logic](./Parse_raw_Wiki/README.md)
 
 ### 2. Tokenization (BPE)
 A neural network doesn't understand "Apple"; it understands numbers. We implemented Byte Pair Encoding (BPE) to create a vocabulary of 32,000 subword tokens, balancing efficiency and generalization.
-*   **Detailed Documentation:** [Read about the Tokenizer & Theory](./Wiki-To-Go/Tokenizer/README.md)
+*   **Detailed Documentation:** [Read about the Tokenizer & Theory](./Tokenizer/README.md)
 
 ---
 
